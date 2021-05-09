@@ -7,14 +7,26 @@ const resolve = (p) => path.resolve(__dirname, p)
 function createConfig(fmt, options = {}) {
   const extraPlugins = options.plugins || []
   delete options.plugins
-
+  const shouldDeclaration = process.env.NODE_ENV === 'production'
   return {
     input: './src/index.ts',
     output: {
       file: resolve(`dist/${name}.${fmt}.bundle.js`),
       format: fmt
     },
-    plugins: [commonjs(), typescript(), ...extraPlugins],
+    plugins: [
+      commonjs(),
+      typescript({
+        tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+        cacheRoot: path.resolve(__dirname, 'node_modules/.rts2_cache'),
+        tsconfigOverride: {
+          compilerOptions: {
+            declaration: shouldDeclaration
+          }
+        }
+      }),
+      ...extraPlugins
+    ],
     ...options
   }
 }

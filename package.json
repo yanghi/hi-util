@@ -5,6 +5,7 @@
   "main": "index.js",
   "repository": "https://github.com/yanghi/hi-util.git",
   "author": "yanghi <yanghi-x@outlook.com>",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
     "dev": "rollup -c",

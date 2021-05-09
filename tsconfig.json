@@ -5,6 +5,7 @@
     "sourceMap": false,
     "target": "esnext",
     "module": "esnext",
+    "removeComments": false,
     "lib": [
       "esnext",
       "dom"
