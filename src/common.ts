@@ -73,6 +73,36 @@ export const shallowCopy = <T = Record<any, any> | Array<any>>(target: T): T => 
 
   return extend({}, target)
 }
+function type(obj): string {
+  return Object.prototype.toString.call(obj).slice(8, -1)
+}
+/**
+ *  深拷贝
+ */
+export const deepCopy = (data) => {
+  const t = type(data)
+  let o
+
+  if (t === 'Array') {
+    o = []
+  } else if (t === 'Object') {
+    o = {}
+  } else {
+    return data
+  }
+
+  if (t === 'Array') {
+    for (let i = 0; i < data.length; i++) {
+      o.push(deepCopy(data[i]))
+    }
+  } else if (t === 'Object') {
+    for (let i in data) {
+      o[i] = deepCopy(data[i])
+    }
+  }
+  return o
+}
+
 /**
  * 复制部分属性到新的对象
  * @param target 被复制的对象
@@ -115,4 +145,7 @@ export const classnames = (...clsArg: ClassArg[]): string => {
     }
   })
   return classArr.join(' ')
+}
+export const trim = (str: string) => {
+  return (str || '').trim()
 }
