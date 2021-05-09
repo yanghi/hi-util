@@ -15,7 +15,7 @@ export const isNil = (a: any): a is null | undefined => {
 }
 
 export const noop = () => {}
-export function getProp<T = Record<any, any>>(obj: T, prop: string | Array<keyof T>) {
+export function getProp<T = Record<any, any>>(obj: T, prop: string | string[]) {
   let keys = typeof prop == 'string' ? prop.split('.') : prop
   let cur: any = obj
   for (let i = 0; i < keys.length; i++) {
