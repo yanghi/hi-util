@@ -1,12 +1,15 @@
 {
   "name": "hi-util",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "utils",
   "main": "index.js",
   "repository": "https://github.com/yanghi/hi-util.git",
   "author": "yanghi <yanghi-x@outlook.com>",
   "types": "dist/index.d.ts",
-  "keywords": ["util", "typescript"],
+  "keywords": [
+    "util",
+    "typescript"
+  ],
   "files": [
     "index.js",
     "dist"
