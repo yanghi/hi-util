@@ -1,6 +1,7 @@
 import path from 'path'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from 'rollup-plugin-typescript2'
+import { babel, getBabelOutputPlugin } from '@rollup/plugin-babel'
 import pkg from './package.json'
 const name = pkg.name
 const resolve = (p) => path.resolve(__dirname, p)
@@ -25,15 +26,18 @@ function createConfig(fmt, options = {}) {
           }
         }
       }),
+      getBabelOutputPlugin({
+        presets: ['@babel/preset-env']
+      }),
       ...extraPlugins
     ],
     ...options
   }
 }
-var configs = [createConfig('cjs', {}), createConfig('es')]
+var configs = [createConfig('cjs', {}), createConfig('esm')]
 if (process.env.NODE_ENV === 'production') {
   const { terser } = require('rollup-plugin-terser')
-  ;['cjs', 'es'].forEach((fmt) => {
+  ;['cjs', 'esm'].forEach((fmt) => {
     configs.push(
       createConfig('', {
         output: {
