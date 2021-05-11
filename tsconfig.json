@@ -15,8 +15,10 @@
         "src/*"
       ]
     },
+    "types": ["jest"]
   },
   "include": [
-    "src/*.ts"
+    "src/*.ts",
+    "tests"
   ]
 }
