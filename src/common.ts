@@ -21,7 +21,7 @@ export function getProp<T = Record<any, any>>(obj: T, prop: string | string[]) {
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
     if (!hasOwnProp(cur, key as string)) return undefined
-    cur = obj[key as string]
+    cur = cur[key as string]
   }
   return cur
 }
