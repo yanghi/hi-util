@@ -10,6 +10,20 @@ export const safeExtends = (a: Record<any, any>, b: Record<any, any>) => {
   }
   return a
 }
+export const applyOption = (target, ...optionArgs: Record<any, any>[]) => {
+  optionArgs.forEach((options) => {
+    for (let k in options) {
+      let prop = options[k]
+
+      if (hasOwnProp(target, k) && typeof prop == 'object' && prop) {
+        applyOption(target[k], options[k])
+      } else {
+        target[k] = options[k]
+      }
+    }
+  })
+  return target
+}
 export const isNil = (a: any): a is null | undefined => {
   return a == null
 }
@@ -115,9 +129,10 @@ export const deepCopy = (data) => {
  */
 export const pickProps = (target: Record<any, any>, keys: string[]) => {
   let res: any = isArray(target) ? [] : {}
-  for (let k in keys) {
+  for (let i in keys) {
+    let k = keys[i]
     if (hasOwnProp(target, k)) {
-      res[k] = target
+      res[k] = target[k]
     }
   }
   return res
