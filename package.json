@@ -1,6 +1,6 @@
 {
   "name": "hi-util",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "utils",
   "main": "index.js",
   "repository": "https://github.com/yanghi/hi-util.git",
