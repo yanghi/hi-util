@@ -1,6 +1,7 @@
+import { equal } from '@/compare'
 import { applyOption, classnames, deepCopy, getProp, pickProps, safeExtends, shallowCopy } from '@/index'
 
-describe('utils.common', () => {
+describe('utils', () => {
   it('safeExtends', () => {
     var a = { foo: 1 }
     var b = { bar: { zoo: 'zoo' }, foo: 2 }
@@ -83,5 +84,34 @@ describe('utils.common', () => {
     expect(classnames('a', ['b', ['c', 'd']])).toBe(cls)
     expect(classnames('a', 'b', 'c d')).toBe(cls)
     expect(classnames('a ', ' b', 'c d')).toBe(cls)
+  })
+  it('equal', () => {
+    var objA: any = {
+      a: '',
+      b: [1, { foo: 2 }]
+    }
+    var objB: any = {
+      a: '',
+      b: [1, { foo: 2 }]
+    }
+    expect(equal(objA, objB)).toBeTruthy()
+    objA.b.push(2)
+    expect(equal(objA, objB)).toBeFalsy()
+    objB.b.push(2)
+    expect(equal(objA, objB)).toBeTruthy()
+    var zoo = { a: 1 }
+    objA.zoo = zoo
+    expect(equal(objA, objB)).toBeFalsy()
+    objB.zoo = zoo
+    expect(equal(objA, objB)).toBeTruthy()
+    delete objA.zoo
+    expect(equal(objA, objB)).toBeFalsy()
+    objA.zoo = { a: 1 }
+    expect(equal(objA, objB)).toBeTruthy()
+
+    expect(equal(1, 2)).toBeFalsy()
+    expect(equal(0, null)).toBeFalsy()
+    expect(equal([1, 2], [1, 2])).toBeTruthy()
+    expect(equal({ '0': 1 }, [1])).toBeFalsy()
   })
 })
