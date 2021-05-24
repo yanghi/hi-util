@@ -79,6 +79,7 @@ export const isObject = (o: any): o is Record<any, any> => {
   return typeof o == 'object' && o
 }
 export const isArray = Array.isArray
+export const isFunction = (obj) => typeof obj == 'function'
 export const shallowCopy = <T = Record<any, any> | Array<any>>(target: T): T => {
   if (isArray(target)) {
     return target.concat() as any
@@ -87,6 +88,9 @@ export const shallowCopy = <T = Record<any, any> | Array<any>>(target: T): T => 
 
   return extend({}, target)
 }
+export const trueFn = () => true
+export const falseFn = () => false
+
 function type(obj): string {
   return Object.prototype.toString.call(obj).slice(8, -1)
 }

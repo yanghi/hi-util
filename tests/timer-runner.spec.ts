@@ -1,4 +1,5 @@
-import { whileDelayRun } from '@/timer-runner'
+import { trueFn } from '@/common'
+import { voteRunOnce, whileDelayRun } from '@/timer-runner'
 
 jest.useFakeTimers()
 describe('runner', () => {
@@ -23,5 +24,61 @@ describe('runner', () => {
     expect(canceled).toBe(true)
     expect(spy).toBeCalledTimes(2)
     expect(runner.cancel()).toBe(false)
+  })
+  it('voteRunOnce', async () => {
+    const spy = jest.fn()
+
+    var a1 = voteRunOnce(trueFn, spy, 100, true)
+    expect(spy).toBeCalledTimes(1)
+    expect(a1()).toBeFalsy()
+    var c = false
+    var fakeCondition = () => {
+      c = false
+      setTimeout(() => {
+        c = true
+      }, 200)
+    }
+    var foo = () => {
+      return c
+    }
+    var a2 = voteRunOnce(foo, spy, 100)
+    jest.runOnlyPendingTimers()
+
+    expect(spy).toBeCalledTimes(1)
+    expect(a2()).toBeTruthy()
+
+    expect(spy).toBeCalledTimes(1)
+    fakeCondition()
+    expect(foo()).toBeFalsy()
+
+    var a3 = voteRunOnce(foo, spy, 300)
+    jest.runOnlyPendingTimers()
+    expect(spy).toBeCalledTimes(2)
+    expect(a3()).toBeFalsy()
+
+    jest.useRealTimers()
+    fakeCondition()
+    var a4 = voteRunOnce(foo, spy, 100)
+    spy.mockReset()
+    const e1 = () => {
+      return new Promise((r) => {
+        setTimeout(() => {
+          r(1)
+          expect(spy).toBeCalledTimes(0)
+        }, 200)
+      })
+    }
+    await e1()
+    const e2 = () => {
+      return new Promise((r) => {
+        setTimeout(() => {
+          r(1)
+          expect(spy).toBeCalledTimes(1)
+        }, 200)
+      })
+    }
+    await e2()
+    expect(a4()).toBeFalsy()
+    jest.useFakeTimers()
   })
 })
