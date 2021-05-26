@@ -52,3 +52,42 @@ export const voteRunOnce = (condition: () => boolean, fn: AnyFn, time: number, i
   }
   return cancel
 }
+type LimitDuplicationRunner = {
+  (...arg: any): any
+  __time?: number
+}
+/**
+ * 在距离上次调用一段时间内不再重复调用
+ * @param fn
+ * @param time 间隔可调用的时间
+ */
+export const limitDuplication = (fn: AnyFn, time: number) => {
+  const runner: LimitDuplicationRunner = (...arg: any[]) => {
+    if (!runner.__time || Date.now() - runner.__time >= time) {
+      runner.__time = Date.now()
+      return fn && fn(...arg)
+    }
+  }
+  return runner
+}
+
+/**
+ * 延时运行,在指定时间内多次调用只调用最后一次(参数也取最后一次的)
+ * @param fn
+ * @param time
+ * @returns
+ */
+export const delayRunLast = (fn: AnyFn, time: number) => {
+  var _args: any[] = []
+  var t
+  const runner = (...args) => {
+    _args = args
+    if (!t) {
+      t = setTimeout(() => {
+        t = undefined
+        fn && fn(..._args)
+      }, time)
+    }
+  }
+  return runner
+}
