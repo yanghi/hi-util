@@ -15,7 +15,8 @@ describe('utils', () => {
       one: 1,
       zoo: {
         two: 2
-      }
+      },
+      ant: null
     }
     expect(getProp(foo, 'one')).toBe(1)
     expect(getProp(foo, ['one'])).toBe(1)
@@ -23,6 +24,8 @@ describe('utils', () => {
     expect(getProp(foo, ['zoo', 'two'])).toBe(2)
     expect(getProp(foo, 'zoo.three')).toBeUndefined()
     expect(getProp(foo, 'any.three')).toBeUndefined()
+    expect(getProp(foo, 'ant.three')).toBeUndefined()
+    expect(getProp(null, 'ant.three')).toBeUndefined()
   })
   it('pickProps', () => {
     var foo = {

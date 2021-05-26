@@ -31,10 +31,12 @@ export const isNil = (a: any): a is null | undefined => {
 export const noop = () => {}
 export function getProp<T = Record<any, any>>(obj: T, prop: string | string[]) {
   let keys = typeof prop == 'string' ? prop.split('.') : prop
+  if (!isObject(obj)) return
+
   let cur: any = obj
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
-    if (!hasOwnProp(cur, key as string)) return undefined
+    if (!isObject(cur) || !hasOwnProp(cur, key as string)) return undefined
     cur = cur[key as string]
   }
   return cur
