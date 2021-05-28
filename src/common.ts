@@ -3,6 +3,15 @@ import { AnyFn } from './ts-type'
 export const hasOwnProp = (obj: any, prop: string) => {
   return Object.prototype.hasOwnProperty.call(obj, prop)
 }
+export const hasProp = (obj: any, prop: string) => {
+  return prop in obj
+}
+export const hasProps = (obj: any, props: string[]) => {
+  for (let i = 0, len = props.length; i < len; i++) {
+    if (!(props[i] in obj)) return false
+  }
+  return true
+}
 export const safeExtends = (a: Record<any, any>, b: Record<any, any>) => {
   for (let k in b) {
     if (hasOwnProp(a, k)) continue

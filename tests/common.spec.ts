@@ -1,5 +1,16 @@
 import { equal } from '@/compare'
-import { applyOption, classnames, deepCopy, getProp, joinPath, pickProps, safeExtends, shallowCopy } from '@/index'
+import {
+  applyOption,
+  classnames,
+  deepCopy,
+  getProp,
+  hasProp,
+  hasProps,
+  joinPath,
+  pickProps,
+  safeExtends,
+  shallowCopy
+} from '@/index'
 
 describe('utils', () => {
   it('safeExtends', () => {
@@ -124,5 +135,19 @@ describe('utils', () => {
     expect(joinPath('/a/', 'b/c/', 'd/e')).toBe('/a/b/c/d/e')
     expect(joinPath('a/', 'b/c/', 'd/e')).toBe('a/b/c/d/e')
     expect(joinPath('/a', '/b/c/', 'd/e')).toBe('/a/b/c/d/e')
+  })
+  it('hasProp', () => {
+    var obj = { a: 1 }
+    expect(hasProp(obj, 'a')).toBeTruthy()
+    expect(hasProp(obj, 'toString')).toBeTruthy()
+    expect(hasProp(obj, 'c')).toBeFalsy()
+  })
+  it('hasProps', () => {
+    var obj = { a: 1, b: '' }
+    expect(hasProps(obj, ['a', 'b'])).toBeTruthy()
+    expect(hasProps(obj, ['a', 'toString'])).toBeTruthy()
+    expect(hasProps(obj, ['a', 'b', 'c'])).toBeFalsy()
+    expect(hasProps(obj, [])).toBeTruthy()
+    expect(hasProps(obj, ['c'])).toBeFalsy()
   })
 })
