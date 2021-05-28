@@ -1,5 +1,5 @@
 import { equal } from '@/compare'
-import { applyOption, classnames, deepCopy, getProp, pickProps, safeExtends, shallowCopy } from '@/index'
+import { applyOption, classnames, deepCopy, getProp, joinPath, pickProps, safeExtends, shallowCopy } from '@/index'
 
 describe('utils', () => {
   it('safeExtends', () => {
@@ -116,5 +116,13 @@ describe('utils', () => {
     expect(equal(0, null)).toBeFalsy()
     expect(equal([1, 2], [1, 2])).toBeTruthy()
     expect(equal({ '0': 1 }, [1])).toBeFalsy()
+  })
+  it('joinPath', () => {
+    expect(joinPath('/a', 'b')).toBe('/a/b')
+    expect(joinPath('/a', '/b/')).toBe('/a/b')
+    expect(joinPath('/a/', '/b/c', 'd/e')).toBe('/a/b/c/d/e')
+    expect(joinPath('/a/', 'b/c/', 'd/e')).toBe('/a/b/c/d/e')
+    expect(joinPath('a/', 'b/c/', 'd/e')).toBe('a/b/c/d/e')
+    expect(joinPath('/a', '/b/c/', 'd/e')).toBe('/a/b/c/d/e')
   })
 })

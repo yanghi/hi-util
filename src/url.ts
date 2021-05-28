@@ -14,14 +14,24 @@ export function getOrigin(url: string) {
   return url
 }
 export function joinPath(...paths: string[]) {
-  const trim = (str) => {
-    let s = str[0] == '/' ? str : '/' + str
-    s = str[s.length - 1] == '/' ? s.slice(0, s.length - 1) : s
-    return s
+  const trim = (str: string) => {
+    var start = 0,
+      end = str.length
+    if (str[0] == '/') {
+      start = 1
+    }
+    if (str[str.length - 1] == '/') {
+      end = str.length - 1
+    }
+    return str.substring(start, end)
   }
-  return paths.reduce((prev, current) => {
-    return prev + trim(current)
-  })
+  const frist = paths.shift()
+  let _path = (frist[0] == '/' ? '/' : '') + trim(frist)
+
+  while (paths.length) {
+    _path += '/' + trim(paths.shift())
+  }
+  return _path
 }
 
 /**
