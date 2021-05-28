@@ -38,8 +38,8 @@ export function joinPath(...paths: string[]) {
  * 提取url中的params
  * @param str
  * @example
- * extractQuerys('a=1&b=2')
- * extractQuerys('http://192.168.9.31:10086/#/pages/sub_videos/index?topicId=346&name=redis')
+ * extractQueryStr('a=1&b=2')
+ * extractQueryStr('http://192.168.9.31:10086/#/pages/sub_videos/index?topicId=346&name=redis')
  */
 export function extractQueryStr(str: string): { [k: string]: string } {
   if (!str) return {}
