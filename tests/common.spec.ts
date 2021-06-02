@@ -1,4 +1,4 @@
-import { equal } from '@/compare'
+import { equal, matchProps } from '@/compare'
 import {
   applyOption,
   classnames,
@@ -149,5 +149,26 @@ describe('utils', () => {
     expect(hasProps(obj, ['a', 'b', 'c'])).toBeFalsy()
     expect(hasProps(obj, [])).toBeTruthy()
     expect(hasProps(obj, ['c'])).toBeFalsy()
+  })
+  it('matchProps', () => {
+    var a = {
+      foo: 1,
+      bar: [1, 2],
+      zoo: [{ '0': 1 }]
+    }
+    var b = {
+      foo: 1,
+      bar: [1, 2],
+      zoo: [[1]],
+      cat: 'cat'
+    }
+    expect(matchProps(a, null, [])).toBeFalsy()
+    expect(matchProps(a, undefined, [])).toBeFalsy()
+    expect(matchProps(undefined, undefined, [])).toBeTruthy()
+    expect(matchProps(null, undefined, [])).toBeFalsy()
+    expect(matchProps(a, b, ['foo', 'bar'])).toBeFalsy()
+    expect(matchProps(a, b, ['foo', 'bar'], true)).toBeTruthy()
+    expect(matchProps(a, b, ['foo', 'bar', 'zoo'], true)).toBeFalsy()
+    expect(matchProps(a, b, ['foo', 'bar', 'cat'], true)).toBeFalsy()
   })
 })
