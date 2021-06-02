@@ -91,3 +91,15 @@ export const delayRunLast = (fn: AnyFn, time: number) => {
   }
   return runner
 }
+export const runOnce = (fn: AnyFn) => {
+  var res
+  const runner = (...args) => {
+    if (!runner.runed) {
+      runner.runed = true
+      res = fn(...args)
+    }
+    return res
+  }
+  runner.runed = false
+  return runner
+}

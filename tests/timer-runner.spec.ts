@@ -1,6 +1,6 @@
 import { trueFn } from '@/common'
 import { sleep } from '@/timer'
-import { delayRunLast, limitDuplication, voteRunOnce, whileDelayRun } from '@/timer-runner'
+import { delayRunLast, limitDuplication, runOnce, voteRunOnce, whileDelayRun } from '@/timer-runner'
 
 jest.useFakeTimers()
 describe('runner', () => {
@@ -123,5 +123,25 @@ describe('runner', () => {
     expect(spy).toBeCalledTimes(2)
 
     jest.useFakeTimers()
+  })
+  it('runOnce', async () => {
+    let spy = jest.fn()
+    let run = runOnce(spy)
+    spy.mockReturnValueOnce('foo')
+    var val = run(1)
+    run()
+    expect(spy).toHaveBeenLastCalledWith(1)
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(val).toBe('foo')
+    expect(run()).toBe('foo')
+    run.runed = false
+    spy.mockReturnValueOnce('bar')
+
+    var val2 = run()
+    expect(spy).toHaveBeenCalledTimes(2)
+    expect(val2).toBe('bar')
+    expect(run()).toBe('bar')
+
+    expect(run.runed).toBeTruthy()
   })
 })
