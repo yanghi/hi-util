@@ -1,3 +1,4 @@
+import { trueFn } from '@/common'
 import { isNil, isArray, isObject } from './common'
 
 /**
@@ -62,4 +63,31 @@ export const deleteInvalidIdProps = <T extends Record<any, any>>(obj): Partial<T
 
     return false
   })
+}
+
+export function assignProp(
+  target: Record<any, any>,
+  props: Record<any, any>,
+  type: 'nil' | 'always' | 'miss' | 'undefined' = 'nil'
+) {
+  if (!isObject(target)) return target
+
+  const assignCondition =
+    type == 'nil'
+      ? isNil
+      : type == 'miss'
+      ? (v, k, obj) => !(k in obj)
+      : type == 'always'
+      ? trueFn
+      : (val) => val === undefined
+
+  let val: any
+  for (let k in props) {
+    val = target[k]
+    if (assignCondition(val, k, target)) {
+      target[k] = props[k]
+    }
+  }
+
+  return target
 }
