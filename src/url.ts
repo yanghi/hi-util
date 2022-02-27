@@ -1,4 +1,5 @@
 import { isNil } from './common'
+import { stringValue } from '@/index'
 
 /**
  * 去除地址末尾的符号 `/` 以及`#`
@@ -14,6 +15,7 @@ export function getOrigin(url: string) {
   return url
 }
 export function joinPath(...paths: string[]) {
+  const safeParse = (s) => (s === void 0 ? '' : s + '')
   const trim = (str: string) => {
     var start = 0,
       end = str.length
@@ -25,11 +27,13 @@ export function joinPath(...paths: string[]) {
     }
     return str.substring(start, end)
   }
-  const frist = paths.shift()
+  const frist = safeParse(paths.shift()!)
   let _path = (frist[0] == '/' ? '/' : '') + trim(frist)
-
   while (paths.length) {
-    _path += '/' + trim(paths.shift())
+    let s = safeParse(paths.shift())
+    let p = trim(s)
+    if (!p) continue
+    _path += '/' + p
   }
   return _path
 }
@@ -57,7 +61,7 @@ export function extractQueryStr(str: string): { [k: string]: string } {
       if (fv[i] === '=') {
         key = fv.slice(0, i)
         val = fv.slice(i + 1)
-        qs[key] = val
+        qs[key] = stringValue(decodeURIComponent(val))
         break
       }
     }
@@ -75,7 +79,7 @@ export function objectToQueryStr(data: Record<any, any>, prefix: false | string 
   for (let key in data) {
     let value = data[key]
     if (isNil(value)) continue
-    res.push(key + '=' + value)
+    res.push(key + '=' + encodeURIComponent(value))
   }
-  return (prefix || '') + res.join('&')
+  return res.length ? (prefix || '') + res.join('&') : ''
 }

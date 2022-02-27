@@ -98,6 +98,7 @@ describe('utils', () => {
     expect(classnames('a', ['b', ['c', 'd']])).toBe(cls)
     expect(classnames('a', 'b', 'c d')).toBe(cls)
     expect(classnames('a ', ' b', 'c d')).toBe(cls)
+    expect(classnames('a ', ' b', false, undefined, [true, false, undefined], 'c d')).toBe(cls)
   })
   it('equal', () => {
     var objA: any = {

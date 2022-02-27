@@ -1,5 +1,5 @@
 import { equal } from '@/compare'
-import { excludeElement } from '@/array/index'
+import { excludeElement } from '@/array'
 describe('array', () => {
   it('excludeElement', () => {
     expect(equal(excludeElement([1, 2, 3], [1, 2]), [3])).toBeTruthy()

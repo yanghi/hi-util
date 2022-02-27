@@ -3,7 +3,7 @@ import { sleep } from '@/timer'
 import { delayRunLast, limitDuplication, runOnce, voteRunOnce, whileDelayRun } from '@/timer-runner'
 
 jest.useFakeTimers()
-describe('runner', () => {
+describe('runner utils', () => {
   it('whileDelayRun', () => {
     const spy = jest.fn()
 
@@ -66,7 +66,7 @@ describe('runner', () => {
         setTimeout(() => {
           r(1)
           expect(spy).toBeCalledTimes(0)
-        }, 200)
+        }, 150)
       })
     }
     await e1()

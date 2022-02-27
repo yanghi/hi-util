@@ -153,7 +153,7 @@ export const pickProps = (target: Record<any, any>, keys: string[]) => {
   return res
 }
 type ClassObj = { [x in string]: any }
-type ClassArg = string | Array<ClassArg | ClassArg[]> | ClassObj
+type ClassArg = undefined | boolean | string | Array<ClassArg | ClassArg[]> | ClassObj
 /**
  * 转换为类名
  * @param clsArg 类名对象(对象仅支持一层属性,属性值为布尔值),或者数组,或者string
@@ -166,7 +166,7 @@ export const classnames = (...clsArg: ClassArg[]): string => {
       classArr.push(ca.trim())
     } else if (isArray(ca)) {
       classArr.push(classnames(...ca))
-    } else {
+    } else if (isObject(ca)) {
       for (let k in ca) {
         if (ca[k]) {
           classArr.push(k.trim())
@@ -174,7 +174,7 @@ export const classnames = (...clsArg: ClassArg[]): string => {
       }
     }
   })
-  return classArr.join(' ')
+  return classArr.filter(Boolean).join(' ')
 }
 export const trim = (str: string) => {
   return (str || '').trim()

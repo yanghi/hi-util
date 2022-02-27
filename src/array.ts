@@ -7,3 +7,7 @@ export const excludeElement = (a: any[], b: any[]) => {
   }
   return extarted
 }
+
+export function uniqueElement(a: any[]) {
+  return [...new Set(a)]
+}
