@@ -1,5 +1,5 @@
 import { isNil } from './common'
-import { stringValue } from '@/index'
+import { strValue } from './string'
 
 /**
  * 去除地址末尾的符号 `/` 以及`#`
@@ -45,7 +45,10 @@ export function joinPath(...paths: string[]) {
  * extractQueryStr('a=1&b=2')
  * extractQueryStr('http://192.168.9.31:10086/#/pages/sub_videos/index?topicId=346&name=redis')
  */
-export function extractQueryStr(str: string): { [k: string]: string } {
+export function extractQueryStr(
+  str: string,
+  convert?: false | ((key: string, val: string, obj: Record<any, any>) => any)
+): { [k: string]: string } {
   if (!str) return {}
   let idx = str.indexOf('?')
   if (~idx) {
@@ -54,6 +57,9 @@ export function extractQueryStr(str: string): { [k: string]: string } {
   let fieldVals = str.split('&')
 
   let qs = {}
+  const _converter =
+    convert === false ? (_, v) => v : typeof convert == 'function' ? convert : (_, v, __) => strValue(v)
+
   fieldVals.forEach((fv) => {
     let len = fv.length
     let key, val
@@ -61,7 +67,7 @@ export function extractQueryStr(str: string): { [k: string]: string } {
       if (fv[i] === '=') {
         key = fv.slice(0, i)
         val = fv.slice(i + 1)
-        qs[key] = stringValue(decodeURIComponent(val))
+        qs[key] = _converter(key, decodeURIComponent(val), qs)
         break
       }
     }

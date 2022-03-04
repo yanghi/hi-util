@@ -90,7 +90,7 @@ export const isObject = (o: any): o is Record<any, any> => {
   return typeof o == 'object' && o
 }
 export const isArray = Array.isArray
-export const isFunction = (obj) => typeof obj == 'function'
+export const isFunction = (obj: unknown): obj is Function => typeof obj == 'function'
 export const shallowCopy = <T = Record<any, any> | Array<any>>(target: T): T => {
   if (isArray(target)) {
     return target.concat() as any

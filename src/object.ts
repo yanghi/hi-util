@@ -1,5 +1,6 @@
 import { trueFn } from '@/common'
 import { isNil, isArray, isObject } from './common'
+import { PropsType } from './ts-type'
 
 /**
  *
@@ -90,4 +91,24 @@ export function assignProp(
   }
 
   return target
+}
+
+export function objectToArr<T extends Record<any, any>>(obj: T): Array<PropsType<T>>
+export function objectToArr<T extends Record<any, any>, V = any>(
+  obj: T,
+  fn?: (k: string, val: PropsType<T>, obj: T) => V
+): V[]
+export function objectToArr<T extends Record<any, any>, V = any>(
+  obj: T,
+  fn?: (k: string, val: PropsType<T>, obj: T) => V
+) {
+  if (!obj) return []
+  let res = []
+  if (!fn) fn = (_, v) => v
+
+  for (let k in obj) {
+    res.push(fn(k, obj[k], obj))
+  }
+
+  return res
 }

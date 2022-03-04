@@ -1,7 +1,7 @@
 import { isObject, equal } from 'hi-util'
 
 expect.extend({
-  toDeepEqual(received, actual) {
+  deepEqualWith(received, actual) {
     const passed = equal(received, actual)
 
     if (passed) {
@@ -10,8 +10,8 @@ expect.extend({
       return {
         pass: false,
         message: () =>
-          `expected not deep equal received: \n${JSON.stringify(received, null, 2)}\nactual: \n${JSON.stringify(
-            actual,
+          `expected not deep equal\nexpected: \n${JSON.stringify(actual, null, 2)}\nreceived: \n${JSON.stringify(
+            received,
             null,
             2
           )}`
