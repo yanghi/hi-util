@@ -108,7 +108,7 @@ function type(obj): string {
 /**
  *  深拷贝
  */
-export const deepCopy = (data) => {
+export const deepCopy = <T extends any[] | Record<any, any>>(data: T): T => {
   const t = type(data)
   let o
 

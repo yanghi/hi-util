@@ -11,3 +11,17 @@ export type RequiredProps<T, K extends keyof T> = {
  * 属性类型
  */
 export type PropsType<T> = T extends Record<any, infer V> ? V : never
+
+/**
+ * 获取必须字段的key
+ * @example
+ * // 'a' | 'c'
+ * RequiredKey<{a: number, b?: any, c: any}>
+ * // never
+ * RequiredKey<{a?: number, b?: any}>
+ */
+export type RequiredKey<T> = NonNullable<
+  {
+    [k in keyof T]: undefined extends T[k] ? never : { key: k }
+  }[keyof T]
+>['key']
