@@ -1,5 +1,5 @@
 import { equal } from '@/compare'
-import { excludeElement, sortBy } from '@/array'
+import { deleteElements, excludeElement, sortBy } from '@/array'
 describe('array', () => {
   it('excludeElement', () => {
     expect(equal(excludeElement([1, 2, 3], [1, 2]), [3])).toBeTruthy()
@@ -32,5 +32,26 @@ describe('array', () => {
     const form_3 = [{ a: 1 }, { a: 3 }, { a: 2 }]
 
     expect(sortBy(arr_3, form_3, (a, b) => a.a === b.a)).deepEqualWith(form_3)
+  })
+
+  it('deleteElements', () => {
+    const list_1 = [1, 2, 3, 4, 5]
+
+    const del_1 = deleteElements(list_1, (el) => el % 2 === 0)
+
+    expect(del_1).deepEqualWith([2, 4])
+    expect(list_1).deepEqualWith([1, 3, 5])
+
+    const list_2 = [1, 2, 3, 4, 5]
+
+    const del_2 = deleteElements(list_2, (el) => el <= 3)
+    expect(list_2).deepEqualWith([4, 5])
+    expect(del_2).deepEqualWith([1, 2, 3])
+
+    const list_3 = [1, 2, 3, 4, 5]
+
+    const del_3 = deleteElements(list_3, (_) => false)
+    expect(list_3).deepEqualWith([1, 2, 3, 4, 5])
+    expect(del_3).deepEqualWith([])
   })
 })

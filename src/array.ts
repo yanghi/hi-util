@@ -33,3 +33,31 @@ export function sortBy(list: any[], from: any[], fn, slice = true) {
   }
   return list
 }
+
+/**
+ * 删除符合条件的元素,并返回删除的元素数组,改变原数组
+ * @example
+ * var list = [1,2,3,4]
+ * // list : [1,3], returns [2,4]
+ * deleteElements(list, (el)=> el % 2 === 0);
+ */
+export function deleteElements<T extends any>(list: Array<T>, cb: (el: T) => boolean): T[] {
+  const result = []
+
+  let flag = -1
+  for (let i = 0, len = list.length; i < len; i++) {
+    let el = list[i]
+
+    if (cb(el)) {
+      result.push(el)
+    } else {
+      list[++flag] = el
+    }
+  }
+
+  if (flag < list.length) {
+    list.splice(flag + 1)
+  }
+
+  return result
+}
